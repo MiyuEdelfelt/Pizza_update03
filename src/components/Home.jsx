@@ -3,16 +3,16 @@ import Header from "./Header";
 import CardPizza from "./CardPizza";
 
 const Home = () => {
-  const [pizzas, setPizzas] = useState([]); // Estado para almacenar las pizzas
-  const [loading, setLoading] = useState(true); // Para controlar el estado de carga
+  const [pizzas, setPizzas] = useState([]); 
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/pizzas");
+        const response = await fetch("http://localhost:5000/api/pizzas"); //Se utiliza el endpoint entregado del desafío
         const data = await response.json();
-        setPizzas(data); // Guarda las pizzas en el estado
-        setLoading(false); // Desactiva el estado de carga
+        setPizzas(data); 
+        setLoading(false); 
       } catch (error) {
         console.error("Error al obtener las pizzas:", error);
         setLoading(false);
@@ -21,7 +21,7 @@ const Home = () => {
     fetchPizzas();
   }, []);
 
-  if (loading) return <div>Cargando pizzas...</div>; // Muestra un mensaje mientras carga
+  if (loading) return <div>Cargando pizzas...</div>; 
 
   return (
     <>
