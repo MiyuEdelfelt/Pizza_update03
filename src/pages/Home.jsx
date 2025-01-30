@@ -3,16 +3,16 @@ import Header from "../components/Header";
 import CardPizza from "../components/CardPizza";
 
 const Home = () => {
-  const [pizzas, setPizzas] = useState([]); 
-  const [loading, setLoading] = useState(true); 
+  const [pizzas, setPizzas] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
         const response = await fetch("http://localhost:5000/api/pizzas"); //Se utiliza el endpoint entregado del desafío
         const data = await response.json();
-        setPizzas(data); 
-        setLoading(false); 
+        setPizzas(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error al obtener las pizzas:", error);
         setLoading(false);
@@ -21,7 +21,7 @@ const Home = () => {
     fetchPizzas();
   }, []);
 
-  if (loading) return <div>Cargando pizzas...</div>; 
+  if (loading) return <div>Cargando pizzas...</div>;
 
   return (
     <>
@@ -33,6 +33,7 @@ const Home = () => {
           {pizzas.map((pizza) => (
             <div className="col-md-4 mb-4" key={pizza.id}>
               <CardPizza
+                id={pizza.id}   
                 name={pizza.name}
                 img={pizza.img}
                 ingredients={pizza.ingredients}

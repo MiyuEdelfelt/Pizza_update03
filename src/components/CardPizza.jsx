@@ -1,6 +1,9 @@
 import React from 'react';
+import { useCart } from '../CartContext';
 
-const CardPizza = ({ name, img, ingredients, price }) => {
+const CardPizza = ({ id, name, img, ingredients, price }) => {
+  const { addToCart } = useCart();
+
   return (
     <div className="card shadow-sm h-100" style={{ borderRadius: '10px' }}>
       <img
@@ -10,9 +13,7 @@ const CardPizza = ({ name, img, ingredients, price }) => {
         style={{ borderTopLeftRadius: '10px', borderTopRightRadius: '10px' }}
       />
       <div className="card-body d-flex flex-column justify-content-between">
-        <h5 className="card-title text-dark fw-bold mb-3">
-          Pizza {name}
-        </h5>
+        <h5 className="card-title text-dark fw-bold mb-3">Pizza {name}</h5>
         <p className="card-text text-center mb-3">
           <strong>Ingredientes:</strong>
         </p>
@@ -28,7 +29,10 @@ const CardPizza = ({ name, img, ingredients, price }) => {
           <button className="btn btn-outline-secondary">
             Ver Más <i className="bi bi-eye-fill"></i>
           </button>
-          <button className="btn btn-dark">
+          <button
+            className="btn btn-dark"
+            onClick={() => addToCart({ id, name, img, price })}
+          >
             Añadir <i className="bi bi-cart-plus"></i>
           </button>
         </div>

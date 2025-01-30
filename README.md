@@ -1,1 +1,2 @@
-Para probar el componente NotFound.jsx ingresar a cualquier ruta erronea por ejemplo:   /cualquiertexto
+Para probar usar el backend que se entrega en el desafío como material de apoyo.
+
