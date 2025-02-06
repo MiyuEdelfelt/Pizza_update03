@@ -1,8 +1,10 @@
 import React from 'react';
-import { useCart } from '../CartContext'; 
+import { useCart } from '../CartContext';
+import { useUser } from '../UserContext';
 
 const Cart = () => {
-    const { cart, increaseCount, decreaseCount, removeFromCart, totalPrice } = useCart(); // Se usa el context
+    const { cart, increaseCount, decreaseCount, removeFromCart, totalPrice } = useCart();
+    const { token } = useUser();
 
     return (
         <div className="container my-5">
@@ -25,7 +27,7 @@ const Cart = () => {
                         {cart.map((item) => (
                             <tr key={item.id}>
                                 <td>
-                                    <img src={item.img} alt={item.name} style={{ maxWidth: "70px" }} />
+                                    <img src={item.img} alt={item.name} style={{ maxWidth: '70px' }} />
                                 </td>
                                 <td className="fw-bold">{item.name}</td>
                                 <td>${item.price.toLocaleString('es-CL')}</td>
@@ -49,7 +51,11 @@ const Cart = () => {
             )}
             <div className="d-flex justify-content-between align-items-center mt-4">
                 <h4 className="fw-bold">Total: ${totalPrice.toLocaleString('es-CL')}</h4>
-                {cart.length > 0 && <button className="btn btn-dark btn-lg">Pagar</button>}
+                {cart.length > 0 && (
+                    <button className="btn btn-dark btn-lg" disabled={!token}>
+                        Pagar
+                    </button>
+                )}
             </div>
         </div>
     );

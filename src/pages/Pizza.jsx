@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import { useCart } from "../CartContext";
 
 const Pizza = () => {
-  const [pizza, setPizza] = useState(null); // Estado para almacenar los datos de la pizza
-  const [loading, setLoading] = useState(true); 
+  const { id } = useParams();
+  const { addToCart } = useCart(); 
+  const [pizza, setPizza] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchPizza = async () => {
       try {
-        const response = await fetch("http://localhost:5000/api/pizzas/p001"); //Utilizamos el endpoint del desafío
+        const response = await fetch(`http://localhost:5000/api/pizzas/${id}`);
         const data = await response.json();
-        setPizza(data); 
-        setLoading(false); 
+        setPizza(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error al obtener la pizza:", error);
         setLoading(false);
       }
     };
     fetchPizza();
-  }, []);
+  }, [id]);
 
-  if (loading) return <div>Cargando información de la pizza...</div>; 
+  if (loading) return <div>Cargando información de la pizza...</div>;
 
-  if (!pizza) return <div>No se encontró la pizza.</div>; 
+  if (!pizza) return <div>No se encontró la pizza.</div>;
   return (
     <div className="container my-4">
       <h1>{pizza.name}</h1>
@@ -34,7 +38,12 @@ const Pizza = () => {
           <li key={index}>{ingredient}</li>
         ))}
       </ul>
-      <button className="btn btn-primary mt-3">Añadir al carrito</button>
+      <button
+        className="btn btn-primary mt-3"
+        onClick={() => addToCart({ id: pizza.id, name: pizza.name, img: pizza.img, price: pizza.price })}
+      >
+        Añadir al carrito
+      </button>
     </div>
   );
 };
