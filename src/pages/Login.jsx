@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
+import { useUser } from '../UserContext';
 
 const Login = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-    });
+    const { login } = useUser();
+    const [formData, setFormData] = useState({ email: '', password: '' });
     const [message, setMessage] = useState('');
 
     const handleInputChange = (e) => {
@@ -12,27 +11,21 @@ const Login = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password } = formData;
 
-        // Validaciones básicas
         if (!email || !password) {
             setMessage('Todos los campos son obligatorios.');
-            setFormData({ email: '', password: '' }); // Reinicia los campos
             return;
         }
 
-        // Validación de longitud de la contraseña
-        if (password.length < 6) {
-            //No me convence dar esta información al usuario ya que le estamos dando indicio del error, por lo cuál facilita saber el error a una persona que no es el usuario real.
-            setMessage('La contraseña es muy corta, no cumple con los caracteres necesarios.');
-            setFormData({ email: '', password: '' }); // Reinicia los campos
-            return;
+        try {
+            await login(email, password);
+            setMessage('Inicio de sesión exitoso.');
+        } catch (error) {
+            setMessage(error.message);
         }
-
-        setMessage('Inicio de sesión exitoso.');
-        setFormData({ email: '', password: '' }); // Reinicia los campos después del éxito
     };
 
     return (

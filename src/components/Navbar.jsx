@@ -7,9 +7,7 @@ const Navbar = () => {
     const { totalPrice } = useCart();
     const { token, logout } = useUser();
 
-    const formatCurrency = (value) => {
-        return value.toLocaleString('es-CL');
-    };
+    const formatCurrency = (value) => value.toLocaleString('es-CL');
 
     return (
         <nav className="navbar navbar-expand-lg navbar-dark bg-dark border-bottom">

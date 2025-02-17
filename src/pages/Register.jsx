@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
+import { useUser } from '../UserContext';
 
 const Register = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        confirmPassword: '',
-    });
+    const { register } = useUser();
+    const [formData, setFormData] = useState({ email: '', password: '', confirmPassword: '' });
     const [message, setMessage] = useState('');
 
     const handleInputChange = (e) => {
@@ -13,31 +11,26 @@ const Register = () => {
         setFormData({ ...formData, [name]: value });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { email, password, confirmPassword } = formData;
 
-        // Validaciones
         if (!email || !password || !confirmPassword) {
             setMessage('Todos los campos son obligatorios.');
-            setFormData({ email: '', password: '', confirmPassword: '' }); // Reinicia los campos
-            return;
-        }
-
-        if (password.length < 6) {
-            setMessage('La contraseña debe tener al menos 6 caracteres.');
-            setFormData({ email: '', password: '', confirmPassword: '' }); // Reinicia los campos
             return;
         }
 
         if (password !== confirmPassword) {
             setMessage('Las contraseñas no coinciden.');
-            setFormData({ email: '', password: '', confirmPassword: '' }); // Reinicia los campos
             return;
         }
 
-        setMessage('Registro exitoso.');
-        setFormData({ email: '', password: '', confirmPassword: '' }); // Reinicia los campos después del éxito
+        try {
+            await register(email, password);
+            setMessage('Registro exitoso.');
+        } catch (error) {
+            setMessage(error.message);
+        }
     };
 
     return (
